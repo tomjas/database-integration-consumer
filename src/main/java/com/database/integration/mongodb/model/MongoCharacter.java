@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Document(collection = "characters")
 @Builder
 @Data
-public class MonogCharacter {
+public class MongoCharacter {
 
     @Id
     private String id;

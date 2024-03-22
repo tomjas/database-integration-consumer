@@ -1,8 +1,8 @@
 package com.database.integration.mongodb.service;
 
 
-import com.database.integration.mongodb.dto.MonogCharacterDto;
-import com.database.integration.mongodb.model.MonogCharacter;
+import com.database.integration.mongodb.dto.MongoCharacterDto;
+import com.database.integration.mongodb.model.MongoCharacter;
 import com.database.integration.mongodb.repository.MongoCharacterRepository;
 import com.database.integration.mongodb.util.CharacterMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,9 @@ public class IntegrationService {
     private final MongoCharacterRepository mongodbRepository;
 
     @Transactional
-    public void saveOrUpdate(MonogCharacterDto dto) {
-        MonogCharacter character = CharacterMapper.INSTANCE.map(dto);
-        Optional<MonogCharacter> optional = mongodbRepository.findByMysqlId(character.getMysqlId());
+    public void saveOrUpdate(MongoCharacterDto dto) {
+        MongoCharacter character = CharacterMapper.INSTANCE.map(dto);
+        Optional<MongoCharacter> optional = mongodbRepository.findByMysqlId(character.getMysqlId());
         if (optional.isPresent()) {
             update(optional.get(), dto);
         } else {
@@ -31,7 +31,7 @@ public class IntegrationService {
         }
     }
 
-    public void update(MonogCharacter character, MonogCharacterDto dto) {
+    public void update(MongoCharacter character, MongoCharacterDto dto) {
         character.setName(dto.name());
         character.setPictureUrl(dto.pictureUrl());
         character.setHomeworld(dto.homeworld());
