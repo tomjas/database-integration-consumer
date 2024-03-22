@@ -8,6 +8,9 @@ import com.database.integration.mongodb.util.CharacterMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +19,24 @@ public class IntegrationService {
 
     private final MongoCharacterRepository mongodbRepository;
 
-    public void insert(MonogCharacterDto dto) {
-        MonogCharacter monogCharacter = CharacterMapper.INSTANCE.map(dto);
-        mongodbRepository.save(monogCharacter);
-        log.debug("Saved record {}", monogCharacter);
+    @Transactional
+    public void saveOrUpdate(MonogCharacterDto dto) {
+        MonogCharacter character = CharacterMapper.INSTANCE.map(dto);
+        Optional<MonogCharacter> optional = mongodbRepository.findByMysqlId(character.getMysqlId());
+        if (optional.isPresent()) {
+            update(optional.get(), dto);
+        } else {
+            mongodbRepository.save(character);
+            log.debug("Saved record {}", character);
+        }
+    }
+
+    public void update(MonogCharacter character, MonogCharacterDto dto) {
+        character.setName(dto.name());
+        character.setPictureUrl(dto.pictureUrl());
+        character.setHomeworld(dto.homeworld());
+        mongodbRepository.save(character);
+        log.debug("Updated record {}", character);
     }
 
 }

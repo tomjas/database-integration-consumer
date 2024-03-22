@@ -16,6 +16,6 @@ public class CharacterConsumer {
     @KafkaListener(topics = {"${kafka.topic}"}, groupId = "${spring.kafka.consumer.group-id}")
     public void consume(MonogCharacterDto dto) {
         log.debug("Received message {}", dto);
-        integrationService.insert(dto);
+        integrationService.saveOrUpdate(dto);
     }
 }
