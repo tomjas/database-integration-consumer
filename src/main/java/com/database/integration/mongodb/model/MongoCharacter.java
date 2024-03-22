@@ -30,4 +30,7 @@ public class MongoCharacter {
 
     @Field(name = "creation_date")
     private LocalDateTime creationDate;
+
+    @Field(name = "update_date")
+    private LocalDateTime updateDate;
 }

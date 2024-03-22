@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -17,26 +18,23 @@ import java.util.Optional;
 @Slf4j
 public class IntegrationService {
 
-    private final MongoCharacterRepository mongodbRepository;
+    private final MongoCharacterRepository repository;
 
     @Transactional
     public void saveOrUpdate(MongoCharacterDto dto) {
-        MongoCharacter character = CharacterMapper.INSTANCE.map(dto);
-        Optional<MongoCharacter> optional = mongodbRepository.findByMysqlId(character.getMysqlId());
-        if (optional.isPresent()) {
-            update(optional.get(), dto);
-        } else {
-            mongodbRepository.save(character);
-            log.debug("Saved record {}", character);
-        }
+        Optional<MongoCharacter> optional = repository.findByMysqlId(dto.mysqlId());
+        MongoCharacter character = optional.map(mongoCharacter -> update(mongoCharacter, dto))
+                .orElseGet(() -> CharacterMapper.INSTANCE.map(dto));
+        repository.save(character);
+        log.debug("Saved record {}", character);
     }
 
-    public void update(MongoCharacter character, MongoCharacterDto dto) {
+    private MongoCharacter update(MongoCharacter character, MongoCharacterDto dto) {
         character.setName(dto.name());
         character.setPictureUrl(dto.pictureUrl());
         character.setHomeworld(dto.homeworld());
-        mongodbRepository.save(character);
-        log.debug("Updated record {}", character);
+        character.setUpdateDate(LocalDateTime.now());
+        return character;
     }
 
 }
