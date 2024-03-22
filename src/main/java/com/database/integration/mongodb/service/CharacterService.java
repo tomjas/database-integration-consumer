@@ -1,8 +1,8 @@
 package com.database.integration.mongodb.service;
 
 import com.database.integration.mongodb.exception.NoSuchCharacterExcpetion;
-import com.database.integration.mongodb.model.MongoCharacter;
-import com.database.integration.mongodb.repository.MongoCharacterRepository;
+import com.database.integration.mongodb.model.Character;
+import com.database.integration.mongodb.repository.CharacterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +10,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class MongoCharacterService {
+public class CharacterService {
 
-    private final MongoCharacterRepository repository;
+    private final CharacterRepository repository;
 
-    public List<MongoCharacter> getCharacters() {
+    public List<Character> getCharacters() {
         return repository.findAll();
     }
 
-    public List<MongoCharacter> getByName(String name) {
+    public List<Character> getByName(String name) {
         return repository.findByName(name);
     }
 
-    public MongoCharacter getById(String id) {
+    public Character getById(String id) {
         return repository.findById(id).orElseThrow(() -> new NoSuchCharacterExcpetion("No character with id " + id));
     }
 }

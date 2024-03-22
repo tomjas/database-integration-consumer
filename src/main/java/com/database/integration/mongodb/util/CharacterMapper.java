@@ -1,7 +1,7 @@
 package com.database.integration.mongodb.util;
 
-import com.database.integration.mongodb.dto.MongoCharacterDto;
-import com.database.integration.mongodb.model.MongoCharacter;
+import com.database.integration.mongodb.dto.CharacterMessage;
+import com.database.integration.mongodb.model.Character;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,5 +13,5 @@ public interface CharacterMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationDate", expression = "java(java.time.LocalDateTime.now())")
-    MongoCharacter map(MongoCharacterDto dto);
+    Character convertMessageToDocument(CharacterMessage dto);
 }

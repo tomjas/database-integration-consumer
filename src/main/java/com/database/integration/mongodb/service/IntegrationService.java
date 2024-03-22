@@ -1,9 +1,9 @@
 package com.database.integration.mongodb.service;
 
 
-import com.database.integration.mongodb.dto.MongoCharacterDto;
-import com.database.integration.mongodb.model.MongoCharacter;
-import com.database.integration.mongodb.repository.MongoCharacterRepository;
+import com.database.integration.mongodb.dto.CharacterMessage;
+import com.database.integration.mongodb.model.Character;
+import com.database.integration.mongodb.repository.CharacterRepository;
 import com.database.integration.mongodb.util.CharacterMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,18 +18,18 @@ import java.util.Optional;
 @Slf4j
 public class IntegrationService {
 
-    private final MongoCharacterRepository repository;
+    private final CharacterRepository repository;
 
     @Transactional
-    public void saveOrUpdate(MongoCharacterDto dto) {
-        Optional<MongoCharacter> optional = repository.findByMysqlId(dto.mysqlId());
-        MongoCharacter character = optional.map(mongoCharacter -> update(mongoCharacter, dto))
-                .orElseGet(() -> CharacterMapper.INSTANCE.map(dto));
+    public void saveOrUpdate(CharacterMessage dto) {
+        Optional<Character> optional = repository.findByMysqlId(dto.mysqlId());
+        Character character = optional.map(mongoCharacter -> update(mongoCharacter, dto))
+                .orElseGet(() -> CharacterMapper.INSTANCE.convertMessageToDocument(dto));
         repository.save(character);
         log.debug("Saved record {}", character);
     }
 
-    private MongoCharacter update(MongoCharacter character, MongoCharacterDto dto) {
+    private Character update(Character character, CharacterMessage dto) {
         character.setName(dto.name());
         character.setPictureUrl(dto.pictureUrl());
         character.setHomeworld(dto.homeworld());

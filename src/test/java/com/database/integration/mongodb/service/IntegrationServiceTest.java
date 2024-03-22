@@ -1,8 +1,8 @@
 package com.database.integration.mongodb.service;
 
-import com.database.integration.mongodb.dto.MongoCharacterDto;
-import com.database.integration.mongodb.model.MongoCharacter;
-import com.database.integration.mongodb.repository.MongoCharacterRepository;
+import com.database.integration.mongodb.dto.CharacterMessage;
+import com.database.integration.mongodb.model.Character;
+import com.database.integration.mongodb.repository.CharacterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class IntegrationServiceTest {
 
     @Mock
-    private MongoCharacterRepository repository;
+    private CharacterRepository repository;
 
     private IntegrationService service;
 
@@ -38,9 +38,9 @@ class IntegrationServiceTest {
         String name = "test name";
         String url = "http://test_url.com";
         String homeworld = "earth2";
-        MongoCharacterDto dto = new MongoCharacterDto(mysqlId, name, url, homeworld);
+        CharacterMessage dto = new CharacterMessage(mysqlId, name, url, homeworld);
 
-        MongoCharacter character = MongoCharacter.builder()
+        Character character = Character.builder()
                 .id("test")
                 .mysqlId(10L)
                 .name("test name")
