@@ -5,11 +5,13 @@ import com.database.integration.mongodb.service.MongoCharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController(value = "/api/v1.0")
+@RestController
+@RequestMapping(value = "/api/v1.0")
 @RequiredArgsConstructor
 public class CharacterController {
 
@@ -20,12 +22,12 @@ public class CharacterController {
         return service.getCharacters();
     }
 
-    @GetMapping(value = "/characters/{name}")
+    @GetMapping(value = "/characters/name/{name}")
     public List<MongoCharacter> getByName(@PathVariable String name) {
         return service.getByName(name);
     }
 
-    @GetMapping(value = "/characters/{id}")
+    @GetMapping(value = "/characters/id/{id}")
     public MongoCharacter getById(@PathVariable String id) {
         return service.getById(id);
     }
