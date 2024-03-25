@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,16 +19,11 @@ public class CharacterController {
     private final CharacterService service;
 
     @GetMapping(value = "/characters")
-    public List<Character> getCharacters() {
-        return service.getCharacters();
+    public List<Character> getCharacters(@RequestParam(required = false) String name) {
+        return service.getCharacters(name);
     }
 
-    @GetMapping(value = "/characters/name/{name}")
-    public List<Character> getByName(@PathVariable String name) {
-        return service.getByName(name);
-    }
-
-    @GetMapping(value = "/characters/id/{id}")
+    @GetMapping(value = "/characters/{id}")
     public Character getById(@PathVariable String id) {
         return service.getById(id);
     }
